@@ -16,13 +16,13 @@
 			margin: 0;
 			padding: 0;
 			height: 100%;
-			background: #2d0000 !important;
+			background: rgb(156, 49, 49) !important;
 		}
 		.user_card {
-			width: 350px;
+			width: 500px;
 			margin-top: auto;
 			margin-bottom: auto;
-			background: #2f3232;
+			background: #fff;
 			position: relative;
 			display: flex;
 			justify-content: center;
@@ -40,11 +40,11 @@
 		}
 
 		#form-title{
-			color: #fff;
+			color: #111;
 		}
 		.login_btn {
 			width: 100%;
-			background: #33ccff !important;
+			background: #ce3131 !important;
 			color: white !important;
 		}
 		.login_btn:focus {
@@ -55,7 +55,7 @@
 			padding: 0 2rem;
 		}
 		.input-group-text {
-			background: #f7ba5b !important;
+			background: #ce3131 !important;
 			color: white !important;
 			border: 0 !important;
 			border-radius: 0.25rem 0 0 0.25rem !important;
@@ -115,7 +115,7 @@
                 {{form.errors}}
 		
 				<div class="mt-4">
-					<div class="d-flex justify-content-center text-white links">
+					<div class="d-flex justify-content-center text-dark links">
 						Already have an account? <a href="{% url 'login' %}" class="ml-2">Login</a>
 					</div>
 				</div>
