@@ -59,6 +59,13 @@ def logout_user(request):
     return redirect('/')
 
 
+def room(request,pk):
+    room = Room.objects.get(id=pk)
+    context = {'room':room}
+
+
+    return render(request,"cbapp/room.html",context)
+
 def createRoom(request):
    
     form=Roomform()
@@ -70,7 +77,7 @@ def createRoom(request):
             form.save()
         return redirect("home")
     context={'form':form}
-    return render(request,'cbapp/create-room.html',context)
+    return render(request,'cbapp/roomform.html',context)
 
 
 def updateRoom(request,pk):
@@ -83,7 +90,7 @@ def updateRoom(request,pk):
             form.save()
         return redirect("home")
     context={'form':form}
-    return render(request,'cbapp/create-room.html',context)
+    return render(request,'cbapp/roomform.html',context)
 
 def deleteRoom(request,pk):
 
