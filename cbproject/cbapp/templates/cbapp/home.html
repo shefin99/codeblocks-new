@@ -51,30 +51,35 @@ Code Blocks
 
 
 <!-- Discussion -->
-<!--Domains section -->
-<section>
-    <div class="container" id="domains">
-        <h2 class="text-center" style="margin-top:100px;"><strong>Codeblocks Discussion</strong></h2>
-        <h3>{{room_count}} rooms available..</h3>
-        <a href="{% url 'create-room' %}">Create Room</a>
-        <div id="domaintext-color" class="row">
-            {% for r in rooms  %}
-            <div class="col-md-6">
-                <div class="card text-center m-4">
-                    <a  href="{% url 'update-room' r.id %}">Edit</a>
-                    <a href="{% url 'delete-room' r.id %}">Delete</a>
-                    <!-- <img class="card-img-top" src="{{d.image.url}}" alt="Card image cap"> -->
-                    <div class="card-body ">
-                        <a href="">@{{r.host.username}}</a>
-                    
-                      <h5 class="card-title">{{r.id}}-- <a href="{% url 'room' r.id%}">{{r.name}}</h5></a>
-                      <a href=""><p class="card-text">{{r.desc}}</p></a>
+
+<section class="discussion-section">
+    
+        
+            <div class="container" id="discussion">
+                <h2 class="text-center" style="margin-top:100px;"><strong>Codeblocks Discussion</strong></h2>
+                <h3 class="rooms-available mx-5 my-4">{{room_count}} Rooms available..</h3>
+                <h3><a class="btn btn-outline-light mx-5 my-4 mr-sm-6" href="{% url 'create-room' %}">Create Room</a></h3>
+                <div id="domaintext-color" class="row">
+                    {% for r in rooms  %}
+                    <div class="col-md-6">
+                        <div class="card text-center m-4">
+                            <a  href="{% url 'update-room' r.id %}">Edit</a> 
+                            <a href="{% url 'delete-room' r.id %}">Delete</a>
+                            
+                            <!-- <img class="card-img-top" src="{{d.image.url}}" alt="Card image cap"> -->
+                            <div class="card-body ">
+                                <a href="">@{{r.host.username}}</a>
+                            
+                              <h5 class="card-title">{{r.id}}-- <a href="{% url 'room' r.id%}">{{r.name}}</h5></a>
+                              <a href=""><p class="card-text">{{r.desc}}</p></a>
+                            </div>
+                        </div>
                     </div>
+                    {% endfor %}
                 </div>
-            </div>
-            {% endfor %}
         </div>
-</div>
+        
+</section>
 
 
 <section>
