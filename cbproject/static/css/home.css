@@ -22,10 +22,11 @@
 
 .card{
     transition: 1s;
+    
 
 }
 .card:hover{
-    background-clip: padding-box;
+    
     transform: scale(1.1);
 }
 

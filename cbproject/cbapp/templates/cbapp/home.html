@@ -50,6 +50,31 @@ Code Blocks
 </div>
 
 
+<!-- Discussion -->
+<!--Domains section -->
+<section>
+    <div class="container" id="domains">
+        <h2 class="text-center" style="margin-top:100px;"><strong>Codeblocks Discussion</strong></h2>
+        <h3>{{room_count}} rooms available..</h3>
+        <a href="{% url 'create-room' %}">Create Room</a>
+        <div id="domaintext-color" class="row">
+            {% for r in rooms  %}
+            <div class="col-md-6">
+                <div class="card text-center m-4">
+                    <a href="{% url 'update-room' r.id %}">Edit</a>
+                    <a href="{% url 'delete-room' r.id %}">Delete</a>
+                    <!-- <img class="card-img-top" src="{{d.image.url}}" alt="Card image cap"> -->
+                    <div class="card-body ">
+                    
+                      <a href=""><h5 class="card-title">{{r.id}}--{{r.name}}</h5></a>
+                      <a href=""><p class="card-text">{{r.desc}}</p></a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+</div>
+
 
 <section>
     <div class="container" id="about">
