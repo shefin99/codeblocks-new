@@ -4,10 +4,12 @@ Code Blocks
 {% endblock %}
 
 {% block content %}
+ 
+
 <style>
     .home-container{
-        display: grid;
-        grid-template-columns: 3fr 1fr ;
+        display:grid;
+        grid-template-columns: 1fr 3fr 1fr;
     }
 </style>
 
@@ -75,44 +77,83 @@ Code Blocks
             {% endfor %}
         </div>
 </div>
+</section>
 
 <!-- Discussion -->
-
 <section class="discussion-section">
             <div class="container" id="discussion">
                 <h2 class="text-center" style="margin-top:100px;"><strong>Codeblocks Discussion</strong></h2>
+
+                <div class="home-container mx-5 my-4">
+                    <h3>Browse Topics</h3>
+                    <hr>
+
+                    <div>
+                        <strong><a class="text-white" href="{% url 'home' %}">All</a></strong>
+                    </div>
+
+                    {% for topic in topics %}
+                    <div>
+                        <h3><a class="text-white" href="{% url 'home' %}?q={{topic.name}}">{{topic.name}}</a></h3>
+                    </div>
+
+                    {% endfor %}
+                </div>
+                <br>
+
                 <h3 class="rooms-available mx-5 my-4">{{room_count}} Rooms available..</h3>
-                <h3><a class="btn btn-outline-light mx-5 my-4 mr-sm-6" href="{% url 'create-room' %}">Create Room</a></h3>
-                <div id="domaintext-color" class="row">
-                    {% for r in rooms  %}
-                    <div class="col-md-6">
-                        <div class="card text-center m-4">
-                            {% if request.user == r.host %}
-                            <a  href="{% url 'update-room' r.id %}">Edit</a> 
-                            
-                            <a href="{% url 'delete-room' r.id %}">Delete</a>
-                            {% endif %}
-                            
-                            <!-- <img class="card-img-top" src="{{d.image.url}}" alt="Card image cap"> -->
-                            <div class="card-body ">
-                                <a href="">@{{r.host.username}}</a>
-                            
-                              <h5 class="card-title">{{r.id}}-- <a href="{% url 'room' r.id%}">{{r.name}}</h5></a>
-                              <a href=""><p class="card-text">{{r.desc}}</p></a>
+                <div>
+                    <h3><a class="btn btn-outline-light mx-5 my-4" href="{% url 'create-room' %}">Create Room</a></h3>
+                    <div id="domaintext-color" class="row">
+                        {% for r in rooms  %}
+                        <div class="col-md-6">
+                            <div class="card text-center m-4">
+                                {% if request.user == r.host %}
+                                <a  href="{% url 'update-room' r.id %}">Edit</a> 
+                                
+                                <a href="{% url 'delete-room' r.id %}">Delete</a>
+                                {% endif %}
+                                
+                                <!-- <img class="card-img-top" src="{{d.image.url}}" alt="Card image cap"> -->
+                                <div class="card-body ">
+                                    <a href="">@{{r.host.username}}</a>
+                                
+                                  <h5 class="card-title">{{r.id}}-- <a href="{% url 'room' r.id%}">{{r.name}}</h5></a>
+                                  <a href=""><p class="card-text">{{r.desc}}</p></a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    {% endfor %}
-                    <div class="col-md-6">
-                        <div class="home-container">
-                            <h3>Recent Activities</h3>
-                        </div>
-                    </div>
+                        {% endfor %}
+                    
                 </div>
-        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="mx-5 my-4">Recent Activities</h3>
+                        <hr>
+                        {% for message in room_messages %}
+                        <div>
+                            <small>@{{message.user}} {{message.created|timesince}}</small>
+                            <small>replied to "{{message.room}}"</small>
+                            <p>{{message}}</p>
+
+                            {% if request.user == message.user %}
+                            <a class="btn btn-outline-light" href="{% url 'delete-message' message.id  %}">Delete</a>
+                            {% endif %}
+                            <hr>
+                        </div>
+                        
+
+                        {% endfor %}
+                    </div>
+
+                
+            </div>
+
 </section>
 
 
+<!--ABOUT US SECTION -->
 <section>
     <div class="container" id="about">
         <h2 class="text-center" style="margin-top:100px;"><strong>About Us</strong></h2><br><br>

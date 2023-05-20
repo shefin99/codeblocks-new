@@ -1,5 +1,6 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
+from django.db.models import Q
 from . models import *
 from django.contrib import messages
 from django.contrib.auth import authenticate,login,logout
@@ -11,14 +12,20 @@ from django.contrib.auth.decorators import login_required
 
 
 def home(request):
+    q = request.GET.get('q') if request.GET.get('q') != None else ""
     domain = Domain.objects.all()
     events = Events.objects.all()
-    rooms=Room.objects.all()
+    rooms=Room.objects.filter(
+        Q(topic__name__contains=q) |
+        Q(name__icontains=q) |
+        Q(desc__icontains=q) 
+        )
     topics=Topic.objects.all()
     room_count = rooms.count()
+    room_messages = Message.objects.filter(Q(room__topic__name__icontains=q))
 
     # room_messages=Message.objects.filter(Q(room__topic__name__icontains=q))
-    context={'rooms':rooms,'topics':topics,'room_count':room_count,'domain':domain,'events':events}
+    context={'rooms':rooms,'topics':topics,'room_count':room_count,'domain':domain,'events':events,'room_messages':room_messages}
     return render(request,"cbapp/index.html",context)
 
 
@@ -59,10 +66,11 @@ def logout_user(request):
     logout(request)
     return redirect('/')
 
+
 @login_required(login_url='login')
 def room(request,pk):
     room = Room.objects.get(id=pk)
-    room_messages = room.message_set.all().order_by('-created')
+    room_messages = room.message_set.all()
     participants = room.participants.all()
     if request.method=='POST':
         message=Message.objects.create(
