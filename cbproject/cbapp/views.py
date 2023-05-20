@@ -1,4 +1,5 @@
 from django.shortcuts import render,redirect
+from django.http import HttpResponse
 from . models import *
 from django.contrib import messages
 from django.contrib.auth import authenticate,login,logout
@@ -11,14 +12,14 @@ from django.contrib.auth.decorators import login_required
 
 def home(request):
     domain = Domain.objects.all()
+    events = Events.objects.all()
     rooms=Room.objects.all()
     topics=Topic.objects.all()
-    
     room_count = rooms.count()
 
     # room_messages=Message.objects.filter(Q(room__topic__name__icontains=q))
-    context={'rooms':rooms,'topics':topics,'room_count':room_count,'domain':domain}
-    return render(request,"cbapp/home.html",context)
+    context={'rooms':rooms,'topics':topics,'room_count':room_count,'domain':domain,'events':events}
+    return render(request,"cbapp/index.html",context)
 
 
 @unauthenticated_user
@@ -58,13 +59,25 @@ def logout_user(request):
     logout(request)
     return redirect('/')
 
-
+@login_required(login_url='login')
 def room(request,pk):
     room = Room.objects.get(id=pk)
-    context = {'room':room}
+    room_messages = room.message_set.all().order_by('-created')
+    participants = room.participants.all()
+    if request.method=='POST':
+        message=Message.objects.create(
+            user=request.user,
+            room=room,
+            body=request.POST.get('body')
+            
+        )
+        room.participants.add(request.user)
+        return redirect('room',pk=room.id)
+    context = {'room':room,'room_messages':room_messages,'participants':participants}
 
     return render(request,"cbapp/room.html",context)
 
+@login_required(login_url='login')
 def createRoom(request):
    
     form=Roomform()
@@ -78,7 +91,7 @@ def createRoom(request):
     context={'form':form}
     return render(request,'cbapp/roomform.html',context)
 
-
+@login_required(login_url='login')
 def updateRoom(request,pk):
     rooms = Room.objects.get(id=pk)
     form=Roomform(instance=rooms)
@@ -91,6 +104,7 @@ def updateRoom(request,pk):
     context={'form':form}
     return render(request,'cbapp/roomform.html',context)
 
+@login_required(login_url='login')
 def deleteRoom(request,pk):
 
     rooms = Room.objects.get(id=pk)
@@ -104,4 +118,17 @@ def deleteRoom(request,pk):
 
 
 
+@login_required(login_url='login')
+def deleteMessage(request,pk):
+   
+    message=Message.objects.get(id=pk)
+
+    if request.user!=message.user:
+        return HttpResponse("you are not allowed here....")
+    
+    if request.method=='POST':
+        message.delete()
+        return redirect('/')
+    context = {'obj':message}
+    return render(request,'cbapp/delete.html',context)
 

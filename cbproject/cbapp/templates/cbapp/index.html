@@ -4,7 +4,12 @@ Code Blocks
 {% endblock %}
 
 {% block content %}
-
+<style>
+    .home-container{
+        display: grid;
+        grid-template-columns: 3fr 1fr ;
+    }
+</style>
 
 <div class="container">
     <a href="#" class="to-top">
@@ -50,11 +55,30 @@ Code Blocks
 </div>
 
 
+<!--Upcoming events -->
+<section>
+    <div class="container" id="domains">
+        <h2 class="text-center" style="margin-top:100px;"><strong>Upcoming Events</strong></h2>
+        <div class="row">
+            {% for e in events %}
+            <div class="col-lg-4 ">
+                <img class="thumbnail" src="{{e.imageURL}}">
+                <div class="box-element product">
+                    <h6 class="text-center"><strong>{{e.e_name}}</strong></h6>
+                    <hr>
+                    <h6><strong>{{e.e_desc}}</strong></h6>
+                    <button data-product="{{product.id}}" data-action="add" class="btn btn-outline-primary add-btn update-cart">Add to Cart</button>
+                    <a class="btn btn-outline-success" href="#">View</a>
+                    <h4 style="display: inline-block; float:right;"><strong>$59</strong></h4>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+</div>
+
 <!-- Discussion -->
 
 <section class="discussion-section">
-    
-        
             <div class="container" id="discussion">
                 <h2 class="text-center" style="margin-top:100px;"><strong>Codeblocks Discussion</strong></h2>
                 <h3 class="rooms-available mx-5 my-4">{{room_count}} Rooms available..</h3>
@@ -63,8 +87,11 @@ Code Blocks
                     {% for r in rooms  %}
                     <div class="col-md-6">
                         <div class="card text-center m-4">
+                            {% if request.user == r.host %}
                             <a  href="{% url 'update-room' r.id %}">Edit</a> 
+                            
                             <a href="{% url 'delete-room' r.id %}">Delete</a>
+                            {% endif %}
                             
                             <!-- <img class="card-img-top" src="{{d.image.url}}" alt="Card image cap"> -->
                             <div class="card-body ">
@@ -76,9 +103,13 @@ Code Blocks
                         </div>
                     </div>
                     {% endfor %}
+                    <div class="col-md-6">
+                        <div class="home-container">
+                            <h3>Recent Activities</h3>
+                        </div>
+                    </div>
                 </div>
         </div>
-        
 </section>
 
 

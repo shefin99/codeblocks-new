@@ -10,6 +10,24 @@ class Domain(models.Model):
 
     def __str__(self):
         return self.d_name
+    
+
+class Events(models.Model):
+    e_name = models.CharField(max_length=200)
+    e_desc = models.TextField(null=True,blank=True)
+    e_image = models.ImageField(null=True,blank=True,default="default.jpg")
+    
+
+    def __str__(self):
+        return self.e_name
+    
+    def imageURL(self):
+        try:
+            img = self.e_image.url
+        except:
+            img = ''
+
+        return img
 
 
 class Topic(models.Model):
