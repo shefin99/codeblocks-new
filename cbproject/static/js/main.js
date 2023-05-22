@@ -1,9 +1,16 @@
-const toTop = document.querySelector(".to-top");
+const scrollTop = document.getElementById('scrolltop')
 
-window.addEventListener("scroll",()=>{
-    if(window.pageYOffset > 100){
-        toTop.classList.add("active");
+window.onload = ()=>{
+    scrollTop.style.visibility = "hidden";
+    scrollTop.style.opacity = 0;
+}
+
+window.onscroll = ()=>{
+    if(window.scrollY > 200){
+        scrollTop.style.visibility = "visible";
+        scrollTop.style.opacity = 1;
     }else{
-        toTop.classList.remove("active");
+        scrollTop.style.visibility = "hidden";
+        scrollTop.style.opacity = 0;
     }
-})
+};

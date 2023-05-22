@@ -6,17 +6,15 @@ Code Blocks
 {% block content %}
  
 
-<style>
+<!-- <style>
     .home-container{
         display:grid;
-        grid-template-columns: 1fr 3fr 1fr;
+        grid-template-columns: 1fr 3fr ;
     }
-</style>
+</style> -->
 
 <div class="container">
-    <a href="#" class="to-top">
-        <i class="fas fa-chevron-up"></i>
-    </a>
+    
     <div class="row" id="home-link">
         <div class="col-md-6">
             <h2>Improve your coding skills by building real projects</h2>
@@ -63,7 +61,7 @@ Code Blocks
         <h2 class="text-center" style="margin-top:100px;"><strong>Upcoming Events</strong></h2>
         <div class="row">
             {% for e in events %}
-            <div class="col-lg-4 ">
+            <div class="col-lg-4 p-3">
                 <img class="thumbnail" src="{{e.imageURL}}">
                 <div class="box-element product">
                     <h6 class="text-center"><strong>{{e.e_name}}</strong></h6>
@@ -80,42 +78,62 @@ Code Blocks
 </section>
 
 <!-- Discussion -->
-<section class="discussion-section">
+<section>
             <div class="container" id="discussion">
                 <h2 class="text-center" style="margin-top:100px;"><strong>Codeblocks Discussion</strong></h2>
-
-                <div class="home-container mx-5 my-4">
-                    <h3>Browse Topics</h3>
-                    <hr>
-
-                    <div>
-                        <strong><a class="text-white" href="{% url 'home' %}">All</a></strong>
+                <div class="row">
+                    <div class="scroll-bg1">
+                        <div id="scroll-div1" class="col-md-4">
+                            <h3>Browse Topics</h3>
+                            <hr>
+                            <strong><a class="text-dark" href="{% url 'home' %}">All</a></strong>
+                            {% for topic in topics %}
+                    
+                            <h3><a class="text-dark" href="{% url 'home' %}?q={{topic.name}}">{{topic.name}}</a></h3>
+        
+                            {% endfor %}
+                        </div>
                     </div>
-
-                    {% for topic in topics %}
-                    <div>
-                        <h3><a class="text-white" href="{% url 'home' %}?q={{topic.name}}">{{topic.name}}</a></h3>
+                    
+                    <div class="scroll-bg">
+                        <div id="scroll-div" class="col-md-8">
+                            <h3>Recent Activities</h3>
+                            {% for message in room_messages %}
+                            <div class="recent-messages">
+                                <small>@{{message.user}} {{message.created|timesince}}</small>
+                                <small>replied to "{{message.room}}"</small>
+                                <p>{{message}}</p>
+        
+                                {% if request.user == message.user %}
+                                <a class="btn btn-outline-dark" href="{% url 'delete-message' message.id  %}">Delete</a>
+                                {% endif %}
+                                <hr>
+                            </div>
+                            {% endfor %}
+                        </div>
                     </div>
-
-                    {% endfor %}
+                    
+    
                 </div>
+
                 <br>
 
-                <h3 class="rooms-available mx-5 my-4">{{room_count}} Rooms available..</h3>
+
+                <h3 class="rooms-available mx-5 my-4 ">{{room_count}} Rooms available..</h3>
                 <div>
-                    <h3><a class="btn btn-outline-light mx-5 my-4" href="{% url 'create-room' %}">Create Room</a></h3>
-                    <div id="domaintext-color" class="row">
+                    <h3><a class="btn btn-outline-light mx-5 my-4" href="{% url 'create-room' %}"><i class="fa-sharp fa-solid fa-plus"></i> Create Room</a></h3>
+                    <div class="row gy-3">
                         {% for r in rooms  %}
-                        <div class="col-md-6">
-                            <div class="card text-center m-4">
+                        <div class="col-md-6 h-100">
+                            <div class="card m-4 ">
                                 {% if request.user == r.host %}
-                                <a  href="{% url 'update-room' r.id %}">Edit</a> 
+                                <a class="text-center btn btn-outline-info" href="{% url 'update-room' r.id %}">Edit</a>
                                 
-                                <a href="{% url 'delete-room' r.id %}">Delete</a>
+                                <a class="btn btn-outline-info" href="{% url 'delete-room' r.id %}">Delete</a>
                                 {% endif %}
                                 
                                 <!-- <img class="card-img-top" src="{{d.image.url}}" alt="Card image cap"> -->
-                                <div class="card-body ">
+                                <div class="card-body text-center ">
                                     <a href="">@{{r.host.username}}</a>
                                 
                                   <h5 class="card-title">{{r.id}}-- <a href="{% url 'room' r.id%}">{{r.name}}</h5></a>
@@ -128,26 +146,6 @@ Code Blocks
                 </div>
                     </div>
 
-                    <div>
-                        <h3 class="mx-5 my-4">Recent Activities</h3>
-                        <hr>
-                        {% for message in room_messages %}
-                        <div>
-                            <small>@{{message.user}} {{message.created|timesince}}</small>
-                            <small>replied to "{{message.room}}"</small>
-                            <p>{{message}}</p>
-
-                            {% if request.user == message.user %}
-                            <a class="btn btn-outline-light" href="{% url 'delete-message' message.id  %}">Delete</a>
-                            {% endif %}
-                            <hr>
-                        </div>
-                        
-
-                        {% endfor %}
-                    </div>
-
-                
             </div>
 
 </section>
@@ -246,7 +244,7 @@ Code Blocks
           <div class="pr-2">7</div>
     </div>
   
-    <div class="flex-1 overflow-x-auto" tabindex="0">
+    <div class="flex-1 overflow-x-auto " tabindex="0">
           <pre class="f4"><span class="code-editor-line-mktg d-inline-block"><span class=pl-k>const</span> <span class=pl-s1>seconds</span> <span class=pl-c1>=</span> <span class=pl-c1>3600</span></span></pre>
           <pre class="f4"><span class="code-editor-line-mktg d-inline-block js-type-letters"><span class=pl-k>const</span> <span class=pl-s1>minutes</span> <span class=pl-c1>=</span> <span class=pl-s1>seconds</span> <span class=pl-c1>/</span> <span class=pl-c1>60</span></span></pre>
           <pre class="f4"><span class="code-editor-line-mktg d-inline-block js-type-row code-editor-line-suggested-mktg color-bg-accent" data-type-row-delay="0"><span class=pl-k>const</span> <span class=pl-s1>hours</span> <span class=pl-c1>=</span> <span class=pl-s1>minutes</span> <span class=pl-c1>/</span> <span class=pl-c1>60</span></span></pre>
@@ -263,8 +261,8 @@ Code Blocks
     </div>
   </div>
   
-    <div class="position-absolute width-full z-1 text-center bottom-0 left-0 mb-n6 f5-mktg js-type-row">
-        <button type="button" data-view-component="true" class="js-type-restart btn-link color-fg-default no-underline">    <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-sync mr-2">
+    <div class="position-absolute width-full z-1  text-center bottom-0 left-0 mb-n6 f5-mktg js-type-row">
+        <button type="button" data-view-component="true" class="js-type-restart btn-link color-fg-default no-underline">    <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-sync mr-2 ">
       <path d="M1.705 8.005a.75.75 0 0 1 .834.656 5.5 5.5 0 0 0 9.592 2.97l-1.204-1.204a.25.25 0 0 1 .177-.427h3.646a.25.25 0 0 1 .25.25v3.646a.25.25 0 0 1-.427.177l-1.38-1.38A7.002 7.002 0 0 1 1.05 8.84a.75.75 0 0 1 .656-.834ZM8 2.5a5.487 5.487 0 0 0-4.131 1.869l1.204 1.204A.25.25 0 0 1 4.896 6H1.25A.25.25 0 0 1 1 5.75V2.104a.25.25 0 0 1 .427-.177l1.38 1.38A7.002 7.002 0 0 1 14.95 7.16a.75.75 0 0 1-1.49.178A5.5 5.5 0 0 0 8 2.5Z"></path>
   </svg>Replay
   </button>  </div>
