@@ -8,6 +8,10 @@ from .forms import createUserForm
 from .decorators import unauthenticated_user
 from .forms import Roomform
 from django.contrib.auth.decorators import login_required
+from django.core.mail import send_mail
+from django.conf import settings
+from django.template.loader import render_to_string
+
 # Create your views here.
 
 
@@ -24,9 +28,11 @@ def home(request):
     room_count = rooms.count()
     room_messages = Message.objects.filter(Q(room__topic__name__icontains=q))
 
-    # room_messages=Message.objects.filter(Q(room__topic__name__icontains=q))
+    
     context={'rooms':rooms,'topics':topics,'room_count':room_count,'domain':domain,'events':events,'room_messages':room_messages}
     return render(request,"cbapp/index.html",context)
+
+
 
 
 @unauthenticated_user
@@ -38,7 +44,16 @@ def signup(request):
         if form.is_valid():
             form.save()
             return redirect('login')
-
+        
+    # template = render_to_string('cbapp/email_template.html')
+    # email = EmailMessage(
+    #     'Thanks for purchasing!',
+    #     template,
+    #     settings.EMAIL_HOST_USER,
+    #     ["shefinmathew2612@gmail.com"]
+    # )
+    # email.fail_silenty = False
+    # email.send()
     context = {'form':form}
     return render(request,"cbapp/signup.html",context)
 

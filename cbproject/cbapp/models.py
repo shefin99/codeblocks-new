@@ -25,7 +25,7 @@ class Events(models.Model):
         try:
             img = self.e_image.url
         except:
-            img = ''
+            img = 'static/images/default.jpg'
 
         return img
 
@@ -43,6 +43,7 @@ class Room(models.Model):
     topic = models.ForeignKey(Topic,on_delete=models.SET_NULL,null=True)
     name = models.CharField(max_length=200)
     desc = models.TextField(null=True , blank=True)
+    # email = models.EmailField(max_length=75)
     participants = models.ManyToManyField(User,related_name='participants', blank=True)
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
