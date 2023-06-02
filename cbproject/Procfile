@@ -1,0 +1,1 @@
+web: gunicorn cbproject.wsgi --log-file -

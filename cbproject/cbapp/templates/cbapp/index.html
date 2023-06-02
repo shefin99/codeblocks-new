@@ -122,8 +122,8 @@ Code Blocks
                     <h3><a class="btn btn-outline-light mx-5 my-4" href="{% url 'create-room' %}"><i class="fa-sharp fa-solid fa-plus"></i> Create Room</a></h3>
                         <div class="row gy-3">
                             {% for r in rooms  %}
-                            <div class="col-md-6 h-100">
-                                <div class="card m-4 ">
+                            <div id="room-" class="col-md-6">
+                                <div class="card m-4">
                                     {% if request.user == r.host %}
                                     <a class="text-center btn btn-outline-info" href="{% url 'update-room' r.id %}">Edit</a>
                                     <a class="btn btn-outline-info" href="{% url 'delete-room' r.id %}">Delete</a>
